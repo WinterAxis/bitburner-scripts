@@ -11,9 +11,9 @@ async function deploy(ns, host, script, script_args) {
 	const threads = Math.floor((ns.getServerMaxRam(host) - ns.getServerUsedRam(host)) / ns.getScriptRam(script));
 	ns.tprint(`Launching script '${script}' on server '${host}' with ${threads} threads and the following arguments: ${script_args}`);
 	await ns.scp(script, ns.getHostname(), host);
-	ns.exec(script, host, threads, ...script_args);
-	ns.rm(script, host)
-
+	if (threads > 0){
+		ns.exec(script, host, threads, ...script_args);
+	}
 }
 
 
